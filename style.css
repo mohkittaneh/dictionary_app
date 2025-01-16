@@ -9,6 +9,11 @@ form {
     margin-bottom: 23px;
 }
 input, button {
+<<<<<<< HEAD
     padding: 12px;
     margin: 12px 0;
+=======
+    padding: 10px;
+    margin: 13px 0;
+>>>>>>> 54e69cc (Your changes)
 }
