@@ -17,7 +17,7 @@
         $servername = "localhost";
         $username = "berlin"; // Replace with your MySQL username
         $password = "12345678"; // Replace with your MySQL password
-        $dbname = "dictionary_app";
+        $dbname = "dictionary";
 
         // Get the user input
         $word = strtolower(trim($_POST["word"]));
