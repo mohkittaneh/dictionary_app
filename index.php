@@ -32,7 +32,7 @@
         $stmt->execute();
         $result = $stmt->get_result();
 
-        if ($result->num_rows > 0) {
+        if (result->num_rows > 0) {
             $row = $result->fetch_assoc();
             echo "<h2>Word: " . htmlspecialchars($word) . "</h2>";
             echo "<p>Meaning: " . htmlspecialchars($row["meaning"]) . "</p>";
@@ -46,4 +46,5 @@
     }
     ?>
 </body>
+
 </html>
