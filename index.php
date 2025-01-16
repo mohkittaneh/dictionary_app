@@ -14,10 +14,10 @@
     <?php
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // MySQL connection settings
-        $servername = "localhost";
-        $username = "berlin"; // Replace with your MySQL username
-        $password = "12345678"; // Replace with your MySQL password
-        $dbname = "dictionary";
+        $servername = "127.0.0.1";
+        $username = "root"; // Replace with your MySQL username
+        $password = "your_password"; // Replace with your MySQL password
+        $dbname = "dictionary_app";
 
         // Get the user input
         $word = strtolower(trim($_POST["word"]));

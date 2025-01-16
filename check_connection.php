@@ -1,7 +1,10 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "12345678"; // Use the correct password
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+$servername = "abokittaneh";
+$username = "berlin";
+$password = "12345678"; // Replace with your MySQL password if set
 $dbname = "dictionary_app";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -11,3 +14,5 @@ if ($conn->connect_error) {
 }
 echo "Connected successfully!";
 ?>
+
+
