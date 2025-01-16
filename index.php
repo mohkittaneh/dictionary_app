@@ -37,11 +37,11 @@
             echo "<h2>.: " . htmlspecialchars($word) . "</h2>";
             echo "<p>Meaning: " . htmlspecialchars($row["meaning"]) . "</p>";
         } else {
-            echo "<h2>Word: " . htmlspecialchars($word) . "</h2>";
+            echo "<h2>Wordd: " . htmlspecialchars($word) . "</h2>";
             echo "<p>Meaning: Not found in the dictionary.</p>";
         }
 
-        $stmt->cloose();
+        $stmt->close();
         $conn->close();
     }
     ?>
