@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تطبيق القاموس</title>
+    <title>Dictionary App</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -53,13 +53,13 @@
 <body>
 
 <div class="container">
-    <h2>تطبيق القاموس</h2>
+    <h2>Dictionary App</h2>
     <form id="dictionaryForm">
-        <input type="text" id="wordInput" placeholder="أدخل الكلمة" required>
-        <input type="submit" value="ابحث">
+        <input type="text" id="wordInput" placeholder="Enter the word" required>
+        <input type="submit" value="Search">
     </form>
     <div class="result" id="resultDiv">
-        <h3>التعريف:</h3>
+        <h3>Definition:</h3>
         <p id="definition"></p>
     </div>
 </div>
@@ -79,12 +79,12 @@
                     document.getElementById('definition').innerText = data.definition;
                 } else {
                     document.getElementById('resultDiv').style.display = 'block';
-                    document.getElementById('definition').innerText = 'تعريف غير موجود.';
+                    document.getElementById('definition').innerText = 'Definition not found.';
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('حدث خطأ أثناء البحث.');
+                alert('An error occurred while searching.');
             });
     });
 </script>
