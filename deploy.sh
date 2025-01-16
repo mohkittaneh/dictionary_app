@@ -1,22 +1,12 @@
 #!/bin/bash
 
-# Step 1: Pull the latest changes from the GitHub repository
-echo "Pulling latest code from GitHub..."
-git pull origin main
+docker stop dictionary-app || true
+docker rm dictionary-app || true
 
-# Step 2: Build and run the Docker container
-echo "Building Docker image..."
-docker build -t dictionary_app .
+git pull origin main || { echo "Git pull failed"; exit 1; }
 
-echo "Stopping existing container (if any)..."
-docker stop dictionary_app 2>/dev/null || true
-docker rm dictionary_app 2>/dev/null || true
+docker build -t dictionary-app . || { echo "Docker build failed"; exit 1; }
 
-echo "Running Docker container..."
-docker run -d -p 9090:80 --name dictionary-app dictionary-app
+docker run -d -p 80:80 --name dictionary-app dictionary-app || { echo "Docker run failed"; exit 1; }
 
-# Step 3: Trigger the Jenkins job
-echo "Triggering Jenkins job..."
-curl -X POST http://<jenkins-server-ip>:9090/job/<dictionary_app>/build --user <mohkittaneh>:<113b5d5cb4c318ae640a69ebca894d8aa0>
-
-echo "Deployment completed successfully!"
+echo "Deployment successful!"
