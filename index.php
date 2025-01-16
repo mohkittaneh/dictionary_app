@@ -34,7 +34,7 @@
 
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
-            echo "<h1>Word: " . htmlspecialchars($word) . "</h1>";
+            echo "<h1>Wordkml: " . htmlspecialchars($word) . "</h1>";
             echo "<p>Meaning: " . htmlspecialchars($row["meaning"]) . "</p>";
         } else {
             echo "<h2>Word: " . htmlspecialchars($word) . "</h2>";
