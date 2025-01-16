@@ -3,17 +3,12 @@ body {
     margin: 20px;
 }
 h1 {
-    color: #333;
+    color: #c61111;
 }
 form {
     margin-bottom: 20px;
 }
 input, button {
-<<<<<<< HEAD
-    padding: 15px;
-    margin: 12px 0;
-=======
     padding: 10px;
     margin: 10px 0;
->>>>>>> 8a7b878 (Your changes)
 }
