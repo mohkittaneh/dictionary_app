@@ -41,7 +41,7 @@
             echo "<p>Meaning: Not found in the dictionary.</p>";
         }
 
-        $stmt->close();
+        $stmt->cloose();
         $conn->close();
     }
     ?>
