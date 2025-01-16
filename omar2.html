@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تطبيق القاموس</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+        input[type="text"] {
+            width: 80%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        input[type="submit"] {
+            padding: 10px 20px;
+            border-radius: 4px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 4px;
+            background-color: #f1f1f1;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>تطبيق القاموس</h2>
+    <form id="dictionaryForm">
+        <input type="text" id="wordInput" placeholder="أدخل الكلمة" required>
+        <input type="submit" value="ابحث">
+    </form>
+    <div class="result" id="resultDiv">
+        <h3>التعريف:</h3>
+        <p id="definition"></p>
+    </div>
+</div>
+
+<script>
+    document.getElementById('dictionaryForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const word = document.getElementById('wordInput').value;
+
+        // هذا الجزء يتم تنفيذه عند الضغط على "ابحث"
+        fetch(`/get-definition?word=${word}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.definition) {
+                    document.getElementById('resultDiv').style.display = 'block';
+                    document.getElementById('definition').innerText = data.definition;
+                } else {
+                    document.getElementById('resultDiv').style.display = 'block';
+                    document.getElementById('definition').innerText = 'تعريف غير موجود.';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('حدث خطأ أثناء البحث.');
+            });
+    });
+</script>
+
+</body>
+</html>
