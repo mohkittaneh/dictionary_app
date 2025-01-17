@@ -32,13 +32,13 @@
         $stmt->execute();
         $result = $stmt->get_result();
 
-        if ($result->num_rows > 0) {
+        i($result->num_rows > 0) {
             $row = $result->fetch_assoc();
             echo "<h2>.: " . htmlspecialchars($word) . "</h2>";
             echo "<p>Meaning: " . htmlspecialchars($row["meaning"]) . "</p>";
         } else {
             echo "<h2>Wordd: " . htmlspecialchars($word) . "</h2>";
-            echo "<p>Meaning: Not found in also the dictionary.</p>";
+            echo "<p>Meaning: Not found in  the dictionary.</p>";
         }
 
         $stmt->close();
