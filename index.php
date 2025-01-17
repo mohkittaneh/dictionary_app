@@ -20,7 +20,7 @@
 
         $word = strtolower(trim($_POST["word"]));
 
-        $conn = new mysqli($servername, $username, $password, $dbname);
+        $cooonn = new mysqli($servername, $username, $password, $dbname);
 
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
