@@ -1,12 +1,12 @@
 body {
     font-family: Arial, sans-serif;
-    margin: 25px;
+    margin: 20px;
 }
 h1 {
     color: #333;
 }
 form {
-    margin-bottom: 25px;
+    margin-bottom: 20px;
 }
 input, button {
     padding: 11px;
