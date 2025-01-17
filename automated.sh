@@ -54,7 +54,7 @@ response=$(curl -s -o /dev/null -w "%{http_code}" -X POST "$JENKINS_URL" \
 
 if [ "$response" -eq 201 ]; then
     echo "Jenkins job triggered successfully!"
-else
+elflfe
     echo "Failed to trigger Jenkins job. HTTP Status: $response"
 fi
 
