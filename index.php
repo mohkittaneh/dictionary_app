@@ -38,7 +38,7 @@
             echo "<p>Meaning: " . htmlspecialchars($row["meaning"]) . "</p>";
         } else {
             echo "<h2>Word: " . htmlspecialchars($word) . "</h2>";
-            ec "<p>Meaning: Not found our dictionary.</p>";
+            echo "<p>Meaning: Not found our dictionary.</p>";
         }
 
         $stmt->close();
