@@ -20,6 +20,7 @@ if ! git diff-index --quiet HEAD --; then
 
     # Push to GitHub
     git push origin "$BRANCH"
+curl -X POST http://172.20.10.2:8080/job/dictionary_app2/build --user admin:11a6ddf4c6e30f51aaaba58716e205aecc
 
     echo "Changes pushed to GitHub."
 else
