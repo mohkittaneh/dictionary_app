@@ -4,7 +4,7 @@
 REPO_DIR="/var/www/html/dictionary_app"  # Path to your local Git repository
 COMMIT_MESSAGE=${1:-"Automated commit from script"}  # Commit message, default if none provided
 BRANCH="main"  # Branch to push to
-
+git pull origin main
 # Navigate to the repository directory
 cd "$REPO_DIR" || { echo "Repository directory not found: $REPO_DIR"; exit 1; }
 
