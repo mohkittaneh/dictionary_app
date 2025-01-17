@@ -3,6 +3,9 @@
 # Variables
 BRANCH="main"
 REPO_URL="github.com:mohkittaneh/dictionary_app.git"
+JENKINS_URL="http://172.20.10.2:8080/job/dictionary_app2/build"
+JENKINS_USER="admin"
+JENKINS_TOKEN="11e16ea07662cc8a0a80a3e667c31846fe"
 
 # Check for uncommitted changes
 if ! git diff-index --quiet HEAD --; then
@@ -49,6 +52,18 @@ else
     echo "Push failed. Attempting to resolve..."
     git pull --rebase
     git push
+fi
+
+# Trigger the Jenkins job
+echo "Triggering the Jenkins job..."
+response=$(curl -s -o /dev/null -w "%{http_code}" -X POST "$JENKINS_URL" \
+    --user "$JENKINS_USER:$JENKINS_TOKEN")
+
+# Check Jenkins job trigger response
+if [ "$response" -eq 201 ]; then
+    echo "Jenkins job triggered successfully!"
+else
+    echo "Failed to trigger Jenkins job. HTTP Status: $response"
 fi
 
 echo "Script execution completed."
