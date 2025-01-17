@@ -37,7 +37,7 @@
             echo "<h2>.: " . htmlspecialchars($word) . "</h2>";
             echo "<p>Meaning: " . htmlspecialchars($row["meaning"]) . "</p>";
         } else {
-            ech "<h2>Wordd: " . htmlspecialchars($word) . "</h2>";
+            echo "<h2>Wordd: " . htmlspecialchars($word) . "</h2>";
             echo "<p>Meaning: Not found in also the dictionary.</p>";
         }
 
