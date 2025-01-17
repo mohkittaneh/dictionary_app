@@ -1,28 +1,55 @@
 #!/bin/bash
 
 # Variables
-REPO_DIR="/var/www/html/dictionary_app"  # Path to your local Git repository
-COMMIT_MESSAGE=${1:-"Automated commit from script"}  # Commit message, default if none provided
-BRANCH="main"  # Branch to push t
-git pull --rebase
-# Navigate to the repository directory
-cd "$REPO_DIR" || { echo "Repository directory not found: $REPO_DIR"; exit 1; }
+BRANCH="main"
+REPO_URL="github.com:mohkittaneh/dictionary_app.git"
 
-# Check for changes
+# Check for uncommitted changes
+if ! git diff-index --quiet HEAD --; then
+    echo "Uncommitted changes detected. Stashing changes..."
+    git stash
+    STASHED=true
+else
+    STASHED=false
+fi
+
+# Pull the latest changes from the remote repository
+echo "Pulling the latest changes from the remote repository..."
+if git pull --rebase; then
+    echo "Successfully pulled the latest changes."
+else
+    echo "Rebase failed. Resolving conflicts..."
+    git rebase --abort
+    git pull --merge
+    echo "Merge completed."
+fi
+
+# Apply stashed changes if any
+if [ "$STASHED" = true ]; then
+    echo "Reapplying stashed changes..."
+    git stash pop
+    if [ $? -ne 0 ]; then
+        echo "Conflict detected while applying stashed changes. Resolve conflicts manually."
+        exit 1
+    fi
+fi
+
+# Stage and commit any new changes
 if ! git diff-index --quiet HEAD --; then
     echo "Changes detected. Committing and pushing to GitHub..."
-
-    # Stage all changes
     git add .
-
-    # Commit changes
-    git commit -m "$COMMIT_MESSAGE"
-
-    # Push to GitHub
-    git push origin "$BRANCH"
-curl -X POST http://172.20.10.2:8080/job/dictionary_app2/build --user admin:11a6ddf4c6e30f51aaaba58716e205aecc
-
-    echo "Changes pushed to GitHub."
-else
-    echo "No changes detected. Nothing to push."
+    git commit -m "Automated commit from script"
 fi
+
+# Push changes to the remote repository
+echo "Pushing changes to the remote repository..."
+if git push; then
+    echo "Changes pushed successfully."
+else
+    echo "Push failed. Attempting to resolve..."
+    git pull --rebase
+    git push
+fi
+
+echo "Script execution completed."
+
