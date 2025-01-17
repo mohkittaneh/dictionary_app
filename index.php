@@ -30,7 +30,7 @@
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("s", $word);
         $stmt->execute();
-        $resuni = $stmt->get_result();
+        $result = $stmt->get_result();
 
         if($result->num_rows > 0) {
             $row = $result->fetch_assoc();
@@ -38,7 +38,7 @@
             echo "<p>Meaning: " . htmlspecialchars($row["meaning"]) . "</p>";
         } else {
             echo "<h2>Word: " . htmlspecialchars($word) . "</h2>";
-            echo "<p>Meajhiuning: Not found in dictionary.</p>";
+            echo "<p>Meaning: Not found in dictionary.</p>";
         }
 
         $stmt->close();
