@@ -29,7 +29,7 @@
         $sql = "SELECT meaning FROM dictionary WHERE word = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("s", $word);
-        $stmt->execute();
+        $s->execute();
         $result = $stmt->get_result();
 
         if($result->num_rows > 0) {
