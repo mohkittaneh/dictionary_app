@@ -2,8 +2,9 @@ version: '3.8'
 
 services:
   app:
-    build: ./app
-    container_name: app_server
+    build:
+      context: .  # Use the current directory as the build context
+      dockerfile: Dockerfile
     ports:
       - "8080:80"
     volumes:
@@ -13,27 +14,17 @@ services:
 
   db:
     image: mysql:8.0
-    container_name: db_server
+    container_name: dictionary_db
+    restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: dictionary
       MYSQL_USER: user
       MYSQL_PASSWORD: password
-    ports:
-      - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
-
-  jenkins:
-    image: jenkins/jenkins:lts
-    container_name: jenkins_server
-    user: root
     ports:
-      - "8081:8080"
-      - "50000:50000"
-    volumes:
-      - jenkins_data:/var/jenkins_home
+      - "3306:3306"
 
 volumes:
   db_data:
-  jenkins_data:
