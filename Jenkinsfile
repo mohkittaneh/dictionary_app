@@ -1,39 +1,40 @@
 pipeline {
     agent any
 
-    environment {
-        IMAGE_NAME = 'dictionary_app'
-        CONTAINER_NAME = 'dictionary_app'
-        HOST_PORT = '8082'
-        CONTAINER_PORT = '80'
-    }
-
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/mohkittaneh/dictionary_app.git'
+                checkout scmGit(
+                    branches: [[name: '*/main']],
+                    extensions: [],
+                    userRemoteConfigs: [[url: 'https://github.com/mohkittaneh/dictionary_app.git']]
+                )
             }
         }
         stage('Build') {
             steps {
-                sh "docker build -t ${IMAGE_NAME} ."
+                sh 'docker build -t dictionary_app .'
             }
         }
         stage('Deploy') {
             steps {
-                sh """
-                docker stop ${CONTAINER_NAME} || true
-                docker rm ${CONTAINER_NAME} || true
-                """
-
-                sh """
-                docker run -d -p ${HOST_PORT}:${CONTAINER_PORT} --name ${CONTAINER_NAME} ${IMAGE_NAME}
-                """
+                sh '''
+                docker stop dictionary_app || true
+                docker rm dictionary_app || true
+                docker run -d -p 8082:80 --name dictionary_app dictionary_app
+                '''
             }
         }
         stage('Health Check') {
             steps {
-                sh "curl -f http://localhost:${HOST_PORT} || exit 1"
+                script {
+                    try {
+                        sh 'curl -v http://localhost:8082'
+                    } catch (Exception e) {
+                        sh 'docker logs dictionary_app'
+                        error("Health check failed! Check the logs above.")
+                    }
+                }
             }
         }
     }
@@ -47,9 +48,6 @@ pipeline {
         }
         failure {
             echo 'Pipeline failed. Check logs for details.'
-            sh "docker logs ${CONTAINER_NAME} > docker_logs.txt || true"
-            archiveArtifacts artifacts: 'docker_logs.txt', allowEmptyArchive: true
         }
     }
 }
-
