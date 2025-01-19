@@ -7,8 +7,6 @@ services:
       dockerfile: dockerfile
     ports:
       - "8083:80"
-    volumes:
-      - ./:/var/www/html
     depends_on:
       - db
 
