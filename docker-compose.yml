@@ -3,12 +3,12 @@ version: '3.8'
 services:
   app:
     build:
-      context: .  # Use the current directory as the build context
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: dockerfile
     ports:
       - "8080:80"
     volumes:
-      - ./app:/var/www/html
+      - ./:/var/www/html
     depends_on:
       - db
 
@@ -18,13 +18,13 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: dictionary
+      MYSQL_DATABASE: dictionary_app
       MYSQL_USER: user
       MYSQL_PASSWORD: password
-    volumes:
-      - db_data:/var/lib/mysql
     ports:
       - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
 
 volumes:
   db_data:
