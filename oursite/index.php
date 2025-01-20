@@ -1,64 +1,43 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Simple Dictionary</title>
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dictionary Application</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <h1>Simple Dictionary</h1>
-    <form method="POST">
-        <label for="word">Enter a word:</label>
-        <input type="text" id="word" name="word" required>
-        <button type="submit">Search</button>
-    </form>
-    <?php
-    // Enable error reporting
-    error_reporting(E_ALL);
-    ini_set('display_errors', 1);
+    
+    <div class="container mt-5">
+        <h1 class="text-center">Simple Application</h1>
+        <form id="dictionary-form" class="mt-4">
+            <div class="mb-3">
+                <label for="input-word" class="form-label">Enter a word:</label>
+                <input type="text" id="input-word" name="input_word" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Find Matched Word</button>
+        </form>
+        <div id="result" class="mt-4"></div>
+    </div>
 
-    // Database connection
-    $servername = "db";
-    $username = "user";
-    $password = "your_password";
-    $dbname = "dictionary_app";
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $("#dictionary-form").on("submit", function (e) {
+            e.preventDefault();
 
-    $conn = new mysqli($servername, $username, $password, $dbname);
+            const inputWord = $("#input-word").val();
+            $.post("connect.php", { input_word: inputWord }, function (response) {
+                const data = JSON.parse(response);
+                if (data.success) {
+                    $("#result").html(`<div class="alert alert-success">Matched Word: ${data.matched_word}</div>`);
+                } else {
+                    $("#result").html(`<div class="alert alert-danger">${data.message}</div>`);
+                }
+            });
+        });
+    </script>
 
-    // Check connection
-    if ($conn->connect_error) {
-        die("<p>Connection failed: " . $conn->connect_error . "</p>");
-    }
-    echo "<p>Connected successfully to the database.</p>";
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $word = strtolower(trim($_POST["word"]));
 
-        // Query to fetch word definition
-        $sql = "SELECT definition FROM words WHERE word = ?";
-        $stmt = $conn->prepare($sql);
-        if (!$stmt) {
-            die("<p>Statement preparation failed: " . $conn->error . "</p>");
-        }
-
-        $stmt->bind_param("s", $word);
-        if (!$stmt->execute()) {
-            die("<p>Execution failed: " . $stmt->error . "</p>");
-        }
-
-        $result = $stmt->get_result();
-        if ($result->num_rows > 0) {
-            $row = $result->fetch_assoc();
-            echo "<h2>Word: " . htmlspecialchars($word) . "</h2>";
-            echo "<p>Definition: " . htmlspecialchars($row["definition"]) . "</p>";
-        } else {
-            echo "<h2>Word: " . htmlspecialchars($word) . "</h2>";
-            echo "<p>Definition: Not found in dictionary.</p>";
-        }
-
-        $stmt->close();
-    }
-
-    $conn->close();
-    ?>
 </body>
 </html>
