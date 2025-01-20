@@ -1,53 +1,61 @@
 pipeline {
     agent any
-
+    
+    environment {
+        REPO_URL = 'https://github.com/mohkittaneh/dictionary_app.git'
+        DOCKER_COMPOSE_FILE = 'docker-compose.yml'
+    }
+    
     stages {
-        stage('Checkout') {
-            steps {
-                checkout scmGit(
-                    branches: [[name: '*/main']],
-                    extensions: [],
-                    userRemoteConfigs: [[url: 'https://github.com/mohkittaneh/dictionary_app.git']]
-                )
-            }
-        }
-        stage('Build') {
-            steps {
-                sh 'docker build -t dictionary_app .'
-            }
-        }
-        stage('Deploy') {
-            steps {
-                sh '''
-                docker stop dictionary_app || true
-                docker rm dictionary_app || true
-                docker run -d -p 8082:80 --name dictionary_app dictionary_app
-                '''
-            }
-        }
-        stage('Health Check') {
+        stage('Clone Repository') {
             steps {
                 script {
-                    try {
-                        sh 'curl -v http://localhost:8082'
-                    } catch (Exception e) {
-                        sh 'docker logs dictionary_app'
-                        error("Health check failed! Check the logs above.")
-                    }
+                    echo 'Cloning repository...'
+                    git branch: 'main', url: "${REPO_URL}"
+                }
+            }
+        }
+        
+        stage('Stop Containers') {
+            steps {
+                script {
+                    echo 'Stopping any running containers...'
+                    sh '''
+                    docker compose down || true
+                    '''
+                }
+            }
+        }
+
+        stage('Build Docker Images') {
+            steps {
+                script {
+                    echo 'Building Docker images...'
+                    sh '''
+                    docker compose -f ${DOCKER_COMPOSE_FILE} build
+                    '''
+                }
+            }
+        }
+        
+        stage('Deploy Containers') {
+            steps {
+                script {
+                    echo 'Deploying containers...'
+                    sh '''
+                    docker compose up -d
+                    '''
                 }
             }
         }
     }
-
+    
     post {
-        always {
-            echo 'Pipeline completed.'
-        }
         success {
-            echo 'Pipeline completed successfully!'
+            echo 'Pipeline executed successfully!'
         }
         failure {
-            echo 'Pipeline failed. Check logs for details.'
+            echo 'Pipeline failed. Please check the logs.'
         }
     }
 }
