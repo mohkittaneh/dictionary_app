@@ -1,24 +1,64 @@
-version: '3.8'
+pipeline {
+    agent any
+    
+    environment {
+        REPO_URL = 'https://github.com/mohkittaneh/dictionary_app.git'
+        DOCKER_COMPOSE_FILE = 'docker-compose.yml'
+    }
+    
+    stages {
+        stage('Clone Repository') {
+            steps {
+                script {
+                    echo 'Cloning repository...'
+                    git branch: 'main', url: "${REPO_URL}"
+                }
+            }
+        }
+        
+        stage('Stop Containers') {
+            steps {
+                script {
+                    echo 'Stopping any running containers...'
+                    sh '''
+                    docker compose down || true
+                    '''
+                }
+            }
+        }
 
-services:
-  app:
-    build:
-      context: .
-      dockerfile: dockerfile
-    ports:
-      - "8082:80"
-    depends_on:
-      - db
-
-  db:
-    image: mysql:8.0
-    container_name: dictionary_db
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: dictionary_app
-      MYSQL_USER: user
-      MYSQL_PASSWORD: your_password
+        stage('Build Docker Images') {
+            steps {
+                script {
+                    echo 'Building Docker images...'
+                    sh '''
+                    docker compose -f ${DOCKER_COMPOSE_FILE} build
+                    '''
+                }
+            }
+        }
+        
+        stage('Deploy Containers') {
+            steps {
+                script {
+                    echo 'Deploying containers...'
+                    sh '''
+                    docker compose up -d
+                    '''
+                }
+            }
+        }
+    }
+    
+    post {
+        success {
+            echo 'Pipeline executed successfully!'
+        }
+        failure {
+            echo 'Pipeline failed. Please check the logs.'
+        }
+    }
+}
    
     volumes:
       - db_data:/var/lib/mysql
