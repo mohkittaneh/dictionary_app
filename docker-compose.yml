@@ -19,8 +19,7 @@ services:
       MYSQL_DATABASE: dictionary_app
       MYSQL_USER: user
       MYSQL_PASSWORD: your_password
-    ports:
-      - "3306:3306"
+   
     volumes:
       - db_data:/var/lib/mysql
 
