@@ -1,17 +1,13 @@
--- Step 1: Create the database
-CREATE DATABASE dictionary_app;
 
--- Step 2: Use the database
+
 USE dictionary_app;
 
--- Step 3: Create the table for storing words and their definitions
 CREATE TABLE words (
-    id INT AUTO_INCREMENT PRIMARY KEY, -- Unique identifier for each word
-    word VARCHAR(255) NOT NULL,        -- The word (e.g., "example")
-    definition TEXT NOT NULL           -- The definition of the word
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    word VARCHAR(255) NOT NULL,    
+    definition TEXT NOT NULL       
 );
 
--- Step 4: Insert sample data into the table
 INSERT INTO words (word, definition) VALUES
 ('example', 'A representative form or pattern.'),
 ('dictionary', 'A reference book or online resource containing words and their definitions.'),
