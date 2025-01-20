@@ -13,9 +13,9 @@
     </form>
     <?php
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $servername = "127.0.0.1";
-        $username = "root";
-        $password = "your_password";
+        $servername = "db";
+        $username = "user";
+        $password = "password";
         $dbname = "dictionary_app";
 
         $word = strtolower(trim($_POST["word"]));
@@ -29,12 +29,12 @@
         $sql = "SELECT meaning FROM dictionary WHERE word = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("s", $word);
-        $s->execute();
+        $stmt->execute();
         $result = $stmt->get_result();
 
-        if($result->num_rows > 0) {
+        if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
-            echo "<h2>.: " . htmlspecialchars($word) . "</h2>";
+            echo "<h2>Word: " . htmlspecialchars($word) . "</h2>";
             echo "<p>Meaning: " . htmlspecialchars($row["meaning"]) . "</p>";
         } else {
             echo "<h2>Word: " . htmlspecialchars($word) . "</h2>";
@@ -46,5 +46,4 @@
     }
     ?>
 </body>
-
 </html>
