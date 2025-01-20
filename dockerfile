@@ -1,22 +1,17 @@
 FROM php:8.1-apache
 
-# Install PHP mysqli extension
 RUN docker-php-ext-install mysqli
 
-# Install curl and Node.js
 RUN apt-get update && apt-get install -y curl \
     && curl -fsSL https://deb.nodesource.com/setup_16.x | bash - \
     && apt-get install -y nodejs
 
-# Copy application files to the web root
-COPY . /var/www/html/
+COPY . /var/www/html/dictionary_app/
 
-# Set the working directory
-WORKDIR /var/www/html/
+WORKDIR /var/www/html/dictionary_app/
 
-# Expose port 80 for Apache
 EXPOSE 80
 
-# Start Apache in the foreground
-CMD ["apache2-foreground"]
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
+CMD ["apache2-foreground"]
