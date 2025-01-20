@@ -1,67 +1,36 @@
-pipeline {
-    agent any
-    
-    environment {
-        REPO_URL = 'https://github.com/mohkittaneh/dictionary_app.git'
-        DOCKER_COMPOSE_FILE = 'docker-compose.yml'
-    }
-    
-    stages {
-        stage('Clone Repository') {
-            steps {
-                script {
-                    echo 'Cloning repository...'
-                    git branch: 'main', url: "${REPO_URL}"
-                }
-            }
-        }
-        
-        stage('Stop Containers') {
-            steps {
-                script {
-                    echo 'Stopping any running containers...'
-                    sh '''
-                    docker compose down || true
-                    '''
-                }
-            }
-        }
-
-        stage('Build Docker Images') {
-            steps {
-                script {
-                    echo 'Building Docker images...'
-                    sh '''
-                    docker compose -f ${DOCKER_COMPOSE_FILE} build
-                    '''
-                }
-            }
-        }
-        
-        stage('Deploy Containers') {
-            steps {
-                script {
-                    echo 'Deploying containers...'
-                    sh '''
-                    docker compose up -d
-                    '''
-                }
-            }
-        }
-    }
-    
-    post {
-        success {
-            echo 'Pipeline executed successfully!'
-        }
-        failure {
-            echo 'Pipeline failed. Please check the logs.'
-        }
-    }
-}
-   
+services:
+  web:
+    build: 
+      context: .
+      dockerfile: Dockerfile
     volumes:
-      - db_data:/var/lib/mysql
+      - ./site:/var/www/html
+    ports:
+      - "81:80"
+    depends_on:
+      - db
+
+  db:
+    image: mysql
+    restart: always
+    volumes:
+      - mysql:/var/lib/mysql
+      - ./db:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_ROOT_PASSWORD: 123
+      MYSQL_DATABASE: mydb
+      
+
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    ports:
+      - 8082:80
+    depends_on:
+      - db
+    environment:
+      - PMA_ARBITRARY=1
+
 
 volumes:
-  db_data:
+  mysql:
