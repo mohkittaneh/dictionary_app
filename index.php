@@ -15,7 +15,7 @@
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $servername = "db";
         $username = "user";
-        $password = "password";
+        $password = "your_password";
         $dbname = "dictionary_app";
 
         $word = strtolower(trim($_POST["word"]));
