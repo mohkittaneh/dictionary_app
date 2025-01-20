@@ -9,7 +9,7 @@
 <body>
     
     <div class="container mt-5">
-        <h1 class="text-center">Simple Application</h1>
+        <h1 class="text-center">Simple  Application</h1>
         <form id="dictionary-form" class="mt-4">
             <div class="mb-3">
                 <label for="input-word" class="form-label">Enter a word:</label>
