@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: dockerfile
     ports:
-      - "8083:80"
+      - "8081:80"
     depends_on:
       - db
 
@@ -18,7 +18,7 @@ services:
       MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: dictionary_app
       MYSQL_USER: user
-      MYSQL_PASSWORD: password
+      MYSQL_PASSWORD: your_password
     ports:
       - "3306:3306"
     volumes:
