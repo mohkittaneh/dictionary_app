@@ -1,18 +1,11 @@
-FROM php:8.1-apache
-
-RUN docker-php-ext-install mysqli
-
-RUN apt-get update && apt-get install -y curl \
-    && curl -fsSL https://deb.nodesource.com/setup_16.x | bash - \
-    && apt-get install -y nodejs
-
-COPY . /var/www/html/dictionary_app/
-
-WORKDIR /var/www/html/dictionary_app/
+FROM ubuntu 
+RUN apt-get update
+RUN apt install apache2 -y
+RUN apt install php -y
+RUN apt install libapache2-mod-php
+RUN apt install php-mysql -y
+WORKDIR /var/www/html
+RUN rm *
 
 EXPOSE 80
-
-RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
-RUN sed -i 's|/var/www/html|/var/www/html/dictionary_app|' /etc/apache2/sites-available/000-default.conf
-
-CMD ["apache2-foreground"]
+CMD ["apache2ctl", "-D", "FOREGROUND"]
