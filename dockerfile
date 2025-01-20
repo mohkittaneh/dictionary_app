@@ -13,5 +13,6 @@ WORKDIR /var/www/html/dictionary_app/
 EXPOSE 80
 
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+RUN sed -i 's|/var/www/html|/var/www/html/dictionary_app|' /etc/apache2/sites-available/000-default.conf
 
 CMD ["apache2-foreground"]
